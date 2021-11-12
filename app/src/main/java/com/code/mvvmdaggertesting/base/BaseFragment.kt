@@ -45,14 +45,6 @@ abstract class BaseFragment: Fragment(), AlertCallBack {
         }
     }
 
-    fun showToast(msg: String) {
-        requireActivity().runOnUiThread {
-            val toast = Toast.makeText(activity, msg, Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.CENTER, 0, 0)
-            toast.show()
-        }
-    }
-
     fun loadImageURL(context: Context, imageView: ImageView, imageURL: String) {
         Glide.with(context).load(imageURL)
                 .fallback(android.R.drawable.stat_notify_error)

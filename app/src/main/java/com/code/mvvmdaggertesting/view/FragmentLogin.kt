@@ -12,17 +12,23 @@ import com.code.mvvmdaggertesting.adapters.LoginRecyclerViewAdapter
 import com.code.mvvmdaggertesting.base.BaseFragment
 import com.code.mvvmdaggertesting.base.BaseViewModelFactory
 import com.code.mvvmdaggertesting.base.LiveDataWrapper
-import com.code.mvvmdaggertesting.model.AllPeople
-import com.code.mvvmdaggertesting.model.AllPeopleResult
+import com.code.mvvmdaggertesting.extensions.showToast
+import com.code.mvvmdaggertesting.model.login.AllPeople
+import com.code.mvvmdaggertesting.model.login.AllPeopleResult
+import com.code.mvvmdaggertesting.repository.LoginRepository
 import com.code.mvvmdaggertesting.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
 /**
  * Login Fragment.
  * Handles UI.
  * Fires rest api initiation.
  */
+@AndroidEntryPoint
 class FragmentLogin : BaseFragment() {
 
     companion object {
@@ -30,18 +36,10 @@ class FragmentLogin : BaseFragment() {
     }
 
     //---------------Class variables---------------//
-
-    //val mLoginUseCase: LoginUseCase by inject()
-    private val mBaseViewModelFactory: BaseViewModelFactory =
-        BaseViewModelFactory(Dispatchers.Main, Dispatchers.IO)
     private val TAG = FragmentLogin::class.java.simpleName
     val mDemoParam = "1"
     lateinit var mRecyclerViewAdapter: LoginRecyclerViewAdapter
-
-    private val mViewModel: LoginViewModel by lazy {
-        ViewModelProviders.of(this, mBaseViewModelFactory)
-            .get(LoginViewModel::class.java)
-    }
+    private val mViewModel : LoginViewModel by viewModels()
 
     //---------------Life Cycle---------------//
 
@@ -69,7 +67,7 @@ class FragmentLogin : BaseFragment() {
             LiveDataWrapper.RESPONSESTATUS.ERROR -> {
                 // Error for http request
                 error_holder.visibility = View.VISIBLE
-                showToast("Error in getting data")
+                requireActivity().showToast("Error in getting data")
 
             }
             LiveDataWrapper.RESPONSESTATUS.SUCCESS -> {

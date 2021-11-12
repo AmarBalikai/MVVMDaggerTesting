@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.code.mvvmdaggertesting.R
-import com.code.mvvmdaggertesting.model.AllPeopleResult
+import com.code.mvvmdaggertesting.model.login.AllPeopleResult
 
 /**
  * Adapter for Login screen recyclerview.

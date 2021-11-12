@@ -1,4 +1,4 @@
-package com.code.mvvmdaggertesting.model
+package com.code.mvvmdaggertesting.model.login
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

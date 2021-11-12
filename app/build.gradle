@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -10,12 +11,12 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.example.mvvmdaggertesting"
+        applicationId "com.code.mvvmdaggertesting"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -40,6 +41,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.fragment:fragment-ktx:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.+'
@@ -48,7 +50,10 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraint_lyt"
     implementation "com.google.android.material:material:$material_design"
     implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
-
+    implementation 'androidx.multidex:multidex:2.0.1'
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
     //Network
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

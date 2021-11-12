@@ -2,27 +2,27 @@ package com.code.mvvmdaggertesting.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.code.mvvmdaggertesting.base.BaseViewModelFactory
 import com.code.mvvmdaggertesting.base.LiveDataWrapper
-import com.code.mvvmdaggertesting.model.AllPeople
+import com.code.mvvmdaggertesting.model.login.AllPeople
+import com.code.mvvmdaggertesting.repository.LoginRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 /**
  * Login View Model.
  * Handles connecting with corresponding Use Case.
  * Getting back data to View.
  */
-
-class LoginViewModel(
-    mainDispatcher: CoroutineDispatcher,
-    ioDispatcher: CoroutineDispatcher
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val mLoginRepo : LoginRepository
 ) : ViewModel()
 {
-
     var mAllPeopleResponse = MutableLiveData<LiveDataWrapper<AllPeople>>()
     val mLoadingLiveData = MutableLiveData<Boolean>()
-    private val job = SupervisorJob()
-    val mUiScope = CoroutineScope(mainDispatcher + job)
-    val mIoScope = CoroutineScope(ioDispatcher + job)
 
     init {
         //call reset to reset all VM data as required
@@ -38,13 +38,14 @@ class LoginViewModel(
     //Keep default scope
     fun requestLoginActivityData(param:String) {
         if(mAllPeopleResponse.value == null){
-            mUiScope.launch {
+            viewModelScope.launch {
                 mAllPeopleResponse.value = LiveDataWrapper.loading()
                 setLoadingVisibility(true)
                 try {
-                    val data = mIoScope.async {
-                       // return@async useCase.processLoginUseCase(param)
+                    val data = viewModelScope.async {
+                        return@async mLoginRepo.getLoginData(param)
                     }.await()
+
                     try {
                         mAllPeopleResponse.value = LiveDataWrapper.success(data)
                     } catch (e: Exception) {
@@ -60,10 +61,5 @@ class LoginViewModel(
 
     private fun setLoadingVisibility(visible: Boolean) {
         mLoadingLiveData.postValue(visible)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        this.job.cancel()
     }
 }
