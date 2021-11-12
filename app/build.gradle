@@ -26,6 +26,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+
+        unitTests.includeAndroidResources = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -88,4 +93,5 @@ dependencies {
     testImplementation "android.arch.core:core-testing:$android_arch_core_testing"
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
     testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
 }
